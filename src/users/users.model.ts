@@ -41,4 +41,29 @@ export class User extends Model<User, UserCreationAttrs>{
         allowNull: true
     })
     banReason: boolean
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: true
+    })
+    age: number
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: true
+    })
+    city: string
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: true
+    })
+    description: string
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: true
+    })
+    name: string
+
 }

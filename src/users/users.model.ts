@@ -1,7 +1,8 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, ForeignKey, HasOne, Model, Table } from "sequelize-typescript";
+import { UsersData } from "src/user-data/users-data.model";
 
 interface UserCreationAttrs {
-    nickname: string,
+    nickname: string
     password: string
 }
 
@@ -42,28 +43,7 @@ export class User extends Model<User, UserCreationAttrs>{
     })
     banReason: boolean
 
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: true
-    })
-    age: number
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: true
-    })
-    city: string
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: true
-    })
-    description: string
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: true
-    })
-    name: string
-
+    @HasOne(() => UsersData)
+    userData: UsersData
+    
 }

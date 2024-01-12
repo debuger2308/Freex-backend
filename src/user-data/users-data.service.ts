@@ -1,8 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { UsersData } from './users-data.model';
-import { SetUserDataDto } from './dto/update-user-data.dto';
-import { JwtService } from '@nestjs/jwt';
+import { SetUserDataDto } from './dto/set-user-data.dto';
+
 
 
 
@@ -16,9 +16,8 @@ export class UsersDataService {
         return userData
     }
 
-    async setUserData(dto: SetUserDataDto, req) {
-
-        const userData = await this.userRepository.update(dto, { where: { userId: req.user.id } })
+    async setUserData(dto: SetUserDataDto, req: any) {
+        const [, [userData]] = await this.userRepository.update(dto, { where: { userId: req.user.id }, returning: true })
         return userData
     }
 }

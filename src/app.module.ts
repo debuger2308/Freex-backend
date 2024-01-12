@@ -7,12 +7,17 @@ import { User } from "./users/users.model";
 import { AuthModule } from './auth/auth.module';
 import { UsersDataModule } from './user-data/users-data.module';
 import { UsersData } from "./user-data/users-data.model";
+import { APP_GUARD } from "@nestjs/core";
+import { UserDataGuard } from "./auth/user-data.guard";
 
 
 @Module({
     controllers: [],
-    providers: [],
+    providers: [
+        
+    ],
     imports: [
+        
         ConfigModule.forRoot({
             envFilePath: `.${process.env.NODE_ENV}.env`
         }),
@@ -28,7 +33,8 @@ import { UsersData } from "./user-data/users-data.model";
         }),
         UsersModule,
         AuthModule,
-        UsersDataModule
+        UsersDataModule,
+        
     ]
 })
 export class AppModule { }

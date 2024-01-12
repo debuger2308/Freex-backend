@@ -1,7 +1,7 @@
 import { IsNumber, IsString, Max, MaxLength, Min } from "class-validator"
 
 
-export class UpdateUserDataDto {
+export class SetUserDataDto {
     
     @IsNumber({allowNaN:false, allowInfinity:false},{message:"Must be number"})
     readonly userId: number

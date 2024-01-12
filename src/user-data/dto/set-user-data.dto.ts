@@ -11,6 +11,10 @@ export class SetUserDataDto {
 
     @MaxLength(30, { message: "Must be less then 30 symbols" })
     @IsString({ message: "Must be string" })
+    readonly sex: string
+
+    @MaxLength(30, { message: "Must be less then 30 symbols" })
+    @IsString({ message: "Must be string" })
     readonly city: string
 
     @MaxLength(30, { message: "Must be less then 320 symbols" })

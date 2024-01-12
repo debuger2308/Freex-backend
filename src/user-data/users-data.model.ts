@@ -38,6 +38,12 @@ export class UsersData extends Model<UsersData, usersDataCreateAttrs>{
     })
     name: string
 
+    @Column({
+        type: DataType.STRING,
+        allowNull: true
+    })
+    sex: string
+
     @ForeignKey(() => User)
     @Column({ type: DataType.INTEGER })
     userId: number

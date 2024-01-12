@@ -13,7 +13,7 @@ export class UsersService {
 
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto)
-        const userData = await this.userDataService.createUserData({ age: null, city: null, description: null, name: null })
+        const userData = await this.userDataService.createUserData({ age: null, city: null, description: null, name: null, sex: null })
         await user.$set('userData', userData)
         user.userData = userData
         return user

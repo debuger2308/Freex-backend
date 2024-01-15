@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Column, DataType, HasOne, Model, Table } from "sequelize-typescript";
+import { SearchParams } from "src/search-params/search-params.model";
 import { UsersData } from "src/user-data/users-data.model";
 
 interface UserCreationAttrs {
@@ -51,5 +52,9 @@ export class User extends Model<User, UserCreationAttrs>{
 
     @HasOne(() => UsersData)
     userData: UsersData
+
+    @HasOne(() => SearchParams)
+    searchParams: SearchParams
+
 
 }

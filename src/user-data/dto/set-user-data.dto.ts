@@ -15,6 +15,10 @@ export class SetUserDataDto {
     @ApiProperty({ example: "Kiev", description: "User`s city" })
     @MaxLength(30, { message: "Must be less then 30 symbols" })
     @IsString({ message: "Must be string" })
+    readonly sex: string
+
+    @MaxLength(30, { message: "Must be less then 30 symbols" })
+    @IsString({ message: "Must be string" })
     readonly city: string
 
     @ApiProperty({ example: "User description", description: "User`s description" })

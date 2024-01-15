@@ -3,9 +3,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import { UsersData } from './users-data.model';
 import { SetUserDataDto } from './dto/set-user-data.dto';
 
-
-
-
 @Injectable()
 export class UsersDataService {
 

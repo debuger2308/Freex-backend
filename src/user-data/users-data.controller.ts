@@ -9,7 +9,7 @@ import { ValidationPipe } from 'src/pipes/validation.pipe';
 export class UsersDataController {
     constructor(private usersDataService: UsersDataService) { }
 
-    @Put('/data')
+    @Put('/set-data')
     @UseGuards(UserDataGuard)
     @UsePipes(ValidationPipe)
     setUserData(@Body() setUserDataDto: SetUserDataDto, @Req() req: any) {

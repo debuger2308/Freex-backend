@@ -9,6 +9,8 @@ interface usersDataCreateAttrs {
     city: string
     description: string
     name: string
+    gender: string
+    location: string
 }
 
 @Table({ tableName: "users-data" })
@@ -30,6 +32,12 @@ export class UsersData extends Model<UsersData, usersDataCreateAttrs>{
         type: DataType.STRING,
         allowNull: true
     })
+    location: string
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: true
+    })
     description: string
 
     @Column({
@@ -42,7 +50,7 @@ export class UsersData extends Model<UsersData, usersDataCreateAttrs>{
         type: DataType.STRING,
         allowNull: true
     })
-    sex: string
+    gender: string
 
     @ForeignKey(() => User)
     @Column({ type: DataType.INTEGER })

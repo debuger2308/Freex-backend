@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import { User } from './users.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersDataService } from 'src/user-data/users-data.service';
-import { SetSearchParamsDto } from 'src/search-params/dto/search-params.dto';
 import { SearchParamsService } from 'src/search-params/search-params.service';
 
 @Injectable()
@@ -16,9 +15,22 @@ export class UsersService {
     }
 
     async createUser(dto: CreateUserDto) {
+        console.log(dto);
         const user = await this.userRepository.create(dto)
-        const userData = await this.userDataService.createUserData({ age: null, city: null, description: null, name: null, sex: null })
-        const searchParams = await this.searchParamsService.createSearchParams({ distance: 80, maxAge: null, minAge: null, sex: null })
+        const userData = await this.userDataService.createUserData({
+            age: null,
+            city: null,
+            description: null,
+            name: null,
+            gender: null,
+            location: null
+        })
+        const searchParams = await this.searchParamsService.createSearchParams({
+            distance: 80,
+            maxAge: null,
+            minAge: null,
+            gender: null,
+        })
         await user.$set('userData', userData)
         await user.$set('searchParams', searchParams)
         user.userData = userData

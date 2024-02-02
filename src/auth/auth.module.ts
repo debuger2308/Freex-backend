@@ -18,7 +18,7 @@ import { APP_GUARD } from '@nestjs/core';
   imports: [
     ThrottlerModule.forRoot([{
       ttl: 1000,
-      limit: 3
+      limit: 300
     }]),
     JwtModule.register({
       secret: process.env.PRIVATE_KEY || 'secret',

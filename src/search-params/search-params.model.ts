@@ -3,7 +3,7 @@ import { User } from "src/users/users.model"
 
 
 interface searchParamsCreateAttr {
-    sex: string
+    gender: string
     distance: number
     minAge: number
     maxAge: number
@@ -17,7 +17,7 @@ export class SearchParams extends Model<SearchParams, searchParamsCreateAttr>{
         type: DataType.STRING,
         allowNull: true
     })
-    sex: string
+    gender: string
 
     @Column({
         type: DataType.STRING,

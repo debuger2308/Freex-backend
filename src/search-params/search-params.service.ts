@@ -21,4 +21,9 @@ export class SearchParamsService {
 
         return searchParams
     }
+
+    async getSearchParams(id: number) {
+        const searchParams = await this.userRepository.findOne({ where: { userId: id } })
+        return searchParams
+    }
 }

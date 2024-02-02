@@ -1,4 +1,4 @@
-import { Body, Controller, Put, UseGuards, Req, UsePipes } from '@nestjs/common';
+import { Body, Controller, Put, UseGuards, Req, UsePipes, Get } from '@nestjs/common';
 import { UsersDataService } from './users-data.service';
 import { SetUserDataDto } from './dto/set-user-data.dto';
 import { UserDataGuard } from 'src/auth/user-data.guard';
@@ -16,4 +16,10 @@ export class UsersDataController {
         return this.usersDataService.setUserData(setUserDataDto, req)
     }
 
+    @Get('/get-users-data')
+    @UseGuards(UserDataGuard)
+    @UsePipes(ValidationPipe)
+    getUsersData(@Req() req: any) {
+        return this.usersDataService.getUsersData(req)
+    }
 }

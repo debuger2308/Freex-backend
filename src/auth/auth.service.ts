@@ -13,29 +13,73 @@ export class AuthService {
 
     async login(userDto: CreateUserDto) {
         const user = await this.validateUser(userDto)
-        return this.generateToken(user)
+        const tokens = await this.generateToken(user)
+        await this.saveToken(user.id, tokens.refreshToken)
+        return tokens
     }
 
+    async logout(refreshToken: string) {
+        const token = await this.removeToken(refreshToken)
+        return token
+    }
+
+    async removeToken(refreshToken: string) {
+        if (!refreshToken) {
+            throw new HttpException('Token not exist', HttpStatus.BAD_REQUEST)
+        }
+        const user = await this.userService.findUserByToken(refreshToken)
+        if (!user) {
+            throw new HttpException('User with this token not found', HttpStatus.NOT_FOUND)
+        }
+        user.refreshToken = ''
+        user.save()
+        return user.refreshToken
+    }
+
+    async refreshToken(refreshToken: string) {
+        if (!refreshToken) {
+            throw new UnauthorizedException({ message: "RefreshToken not found" })
+        }
+        try {
+            const user = this.jwtService.verify(refreshToken, { secret: process.env.JWT_REFRESH_SECRET })
+            const tokens = await this.generateToken(user)
+            await this.saveToken(user.id, tokens.refreshToken)
+            return tokens
+        } catch (error) {
+            return null
+        }
+    }
 
     async registration(userDto: CreateUserDto) {
-        const candidate = await this.userService.getUsersByNickname(userDto.nickname)
+        const candidate = await this.userService.getUserByNickname(userDto.nickname)
         if (candidate) {
             throw new HttpException('User already exist', HttpStatus.CONFLICT)
         }
         const hashPassword = await bcrypt.hash(userDto.password, 5)
         const user = await this.userService.createUser({ ...userDto, password: hashPassword })
-        return this.generateToken(user)
+        const tokens = await this.generateToken(user)
+        await this.saveToken(user.id, tokens.refreshToken)
+        return tokens
     }
 
     private async generateToken(user: User) {
         const payload = { nickname: user.nickname, id: user.id }
         return {
-            token: this.jwtService.sign(payload)
+            accessToken: this.jwtService.sign(payload, { expiresIn: '30m', secret: process.env.JWT_ACCESS_SECRET }),
+            refreshToken: this.jwtService.sign(payload, { expiresIn: '30d', secret: process.env.JWT_REFRESH_SECRET })
+        }
+    }
+
+    private async saveToken(userId: number, refreshToken: string) {
+        const user = await this.userService.getUserByUserId(userId)
+        if (user) {
+            user.refreshToken = refreshToken
+            user.save()
         }
     }
 
     private async validateUser(userDto: CreateUserDto) {
-        const user = await this.userService.getUsersByNickname(userDto.nickname)
+        const user = await this.userService.getUserByNickname(userDto.nickname)
         const passwordEquals = await bcrypt.compare(userDto.password, user?.password || '')
         if (user && passwordEquals) {
             return user

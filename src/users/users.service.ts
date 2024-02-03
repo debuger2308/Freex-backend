@@ -15,7 +15,6 @@ export class UsersService {
     }
 
     async createUser(dto: CreateUserDto) {
-        console.log(dto);
         const user = await this.userRepository.create(dto)
         const userData = await this.userDataService.createUserData({
             age: null,
@@ -37,9 +36,22 @@ export class UsersService {
         return user
     }
 
-    async getUsersByNickname(nickname: string) {
+    async getUserByNickname(nickname: string) {
         const user = await this.userRepository.findOne({
             where: { nickname }, include: { all: true }
+        })
+        return user
+    }
+
+    async getUserByUserId(userId: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: userId }
+        })
+        return user
+    }
+    async findUserByToken(refreshToken) {
+        const user = await this.userRepository.findOne({
+            where: { refreshToken: refreshToken }
         })
         return user
     }

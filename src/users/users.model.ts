@@ -50,6 +50,13 @@ export class User extends Model<User, UserCreationAttrs>{
     })
     banReason: boolean
 
+    @Column({
+        type: DataType.STRING,
+        defaultValue: '',
+        allowNull: true
+    })
+    refreshToken: string
+
     @HasOne(() => UsersData)
     userData: UsersData
 

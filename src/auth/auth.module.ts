@@ -20,12 +20,7 @@ import { APP_GUARD } from '@nestjs/core';
       ttl: 1000,
       limit: 300
     }]),
-    JwtModule.register({
-      secret: process.env.PRIVATE_KEY || 'secret',
-      signOptions: {
-        expiresIn: '24h'
-      }
-    }),
+    JwtModule.register({}),
     forwardRef(() => UsersModule),
   ],
   exports: [

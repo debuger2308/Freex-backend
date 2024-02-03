@@ -18,7 +18,7 @@ export class UserDataGuard implements CanActivate {
             if (bearer !== 'Bearer' || !token) {
                 throw new UnauthorizedException({ message: "User unauthorized" })
             }
-            const user = this.jwtService.verify(token)
+            const user = this.jwtService.verify(token, { secret: process.env.JWT_ACCESS_SECRET })
             req.user = user
             return true
         } catch (error) {

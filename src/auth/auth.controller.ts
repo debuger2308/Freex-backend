@@ -1,10 +1,10 @@
-import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Req, Res, UsePipes } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
 import { Throttle } from '@nestjs/throttler';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { User } from 'src/users/users.model';
+import { Response, Request, response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -15,16 +15,41 @@ export class AuthController {
     @ApiResponse({ status: 200, type: "jwt-token" })
     @Post('/login')
     @UsePipes(ValidationPipe)
-    login(@Body() userDto: CreateUserDto) {
-        return this.authService.login(userDto)
+    async login(@Res({ passthrough: true }) response: Response, @Body() userDto: CreateUserDto) {
+        const tokens = await this.authService.login(userDto)
+        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+        return { token: tokens.accessToken }
     }
 
     @ApiOperation({ summary: "Create user" })
     @ApiResponse({ status: 200, type: "jwt-token" })
-    @Throttle({ default: { ttl: 3600000, limit: 3 } })
+    @Throttle({ default: { ttl: 3600000, limit: 300 } })
     @Post('/registration')
     @UsePipes(ValidationPipe)
-    registration(@Body() userDto: CreateUserDto) {
-        return this.authService.registration(userDto)
+    async registration(@Res({ passthrough: true }) response: Response, @Body() userDto: CreateUserDto) {
+        const tokens = await this.authService.registration(userDto)
+        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+        return { token: tokens.accessToken }
+    }
+
+    @ApiOperation({ summary: "Logout user" })
+    @ApiResponse({ status: 200 })
+    @Throttle({ default: { ttl: 3600000, limit: 300 } })
+    @Post('/logout')
+    async logout(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+        const { refreshToken } = request.cookies
+        response.clearCookie('refreshToken')
+        await this.authService.logout(refreshToken)
+        return HttpStatus.OK
+    }
+    @ApiOperation({ summary: "Refresh JWT Token" })
+    @ApiResponse({ status: 200 })
+    @Throttle({ default: { ttl: 3600000, limit: 300 } })
+    @Post('/refresh')
+    async refreshToken(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+        const { refreshToken } = request.cookies
+        const tokens = await this.authService.refreshToken(refreshToken)
+        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+        return { token: tokens.accessToken }
     }
 }

@@ -20,6 +20,12 @@ export class UsersDataController {
     @UseGuards(UserDataGuard)
     @UsePipes(ValidationPipe)
     getUsersData(@Req() req: any) {
-        return this.usersDataService.getUsersData(req)
+        return this.usersDataService.getUserData(req)
+    }
+    @Get('/get-user-data')
+    @UseGuards(UserDataGuard)
+    @UsePipes(ValidationPipe)
+    getUserData(@Req() req: any) {
+        return this.usersDataService.getUserData(req)
     }
 }

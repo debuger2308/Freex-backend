@@ -65,8 +65,8 @@ export class AuthService {
     private async generateToken(user: User) {
         const payload = { nickname: user.nickname, id: user.id }
         return {
-            accessToken: this.jwtService.sign(payload, { expiresIn: '30m', secret: process.env.JWT_ACCESS_SECRET }),
-            refreshToken: this.jwtService.sign(payload, { expiresIn: '30d', secret: process.env.JWT_REFRESH_SECRET })
+            accessToken: this.jwtService.sign(payload, { expiresIn: '30s', secret: process.env.JWT_ACCESS_SECRET }),
+            refreshToken: this.jwtService.sign(payload, { expiresIn: '24d', secret: process.env.JWT_REFRESH_SECRET })
         }
     }
 

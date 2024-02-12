@@ -23,9 +23,17 @@ export class UsersDataService {
         return userData
     }
 
-    async getUserData(id: number) {
+    async getUserData(req: any) {
+        const id = req.user.id
         const userData = await this.userRepository.findOne({ where: { id } })
-        return userData
+        return {
+            age: userData.age,
+            city: userData.city,
+            location: userData.location,
+            description: userData.description,
+            gender: userData.gender,
+            name: userData.name,
+        }
     }
 
     async getUsersData(req: any) {

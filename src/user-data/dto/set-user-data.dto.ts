@@ -19,17 +19,17 @@ export class SetUserDataDto {
     @IsString({ message: "Must be string" })
     readonly city: string
 
-    @MaxLength(30, { message: "Must be less then 30 symbols" })
+    @MaxLength(120, { message: "Must be less then 120 symbols" })
     @IsString({ message: "Must be string" })
     readonly location: string
 
     @ApiProperty({ example: "User description", description: "User`s description" })
-    @MaxLength(30, { message: "Must be less then 320 symbols" })
+    @MaxLength(320, { message: "Must be less then 320 symbols" })
     @IsString({ message: "Must be string" })
     readonly description: string
 
     @ApiProperty({ example: "David", description: "User`s name" })
-    @MaxLength(30, { message: "Must be less then 20 symbols" })
+    @MaxLength(20, { message: "Must be less then 20 symbols" })
     @IsString({ message: "Must be string" })
     readonly name: string
 

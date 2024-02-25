@@ -37,7 +37,7 @@ export class UsersDataService {
     }
 
     async getUsersData(req: any) {
-        const searchParams = await this.searchParamsService.getSearchParams(req.user.id)
+        const searchParams = await this.searchParamsService.getSearchParams(req)
         const userData = await this.getUserData(req.user.id)
 
         if (!searchParams.gender

@@ -20,7 +20,7 @@ export class SearchParams extends Model<SearchParams, searchParamsCreateAttr>{
     gender: string
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER  ,
         allowNull: true,
     })
     distance: number

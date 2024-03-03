@@ -25,20 +25,13 @@ export class UsersDataService {
 
     async getUserData(req: any) {
         const id = req.user.id
-        const userData = await this.userRepository.findOne({ where: { id } })
-        return {
-            age: userData.age,
-            city: userData.city,
-            location: userData.location,
-            description: userData.description,
-            gender: userData.gender,
-            name: userData.name,
-        }
+        const userData = await this.userRepository.findOne({ where: { id }, include: ['images'] })
+        return userData
     }
 
     async getUsersData(req: any) {
         const searchParams = await this.searchParamsService.getSearchParams(req)
-        const userData = await this.getUserData(req.user.id)
+        const userData = await this.getUserData(req)
 
         if (!searchParams.gender
             || !searchParams.minAge
@@ -57,12 +50,17 @@ export class UsersDataService {
                 userId: {
                     [Op.ne]: req.user.id
                 }
+            },
+            include: ['images']
+        })
+
+        return usersData.map((data) => {
+            const distance = calcDistance(data.location, userData.location)
+            if (distance <= searchParams.distance) {
+                data.location = ''
+                return data
             }
         })
 
-        return usersData.filter((data) => {
-            const distance = calcDistance(data.location, userData.location)
-            if (distance <= searchParams.distance) return true
-        })
     }
 }

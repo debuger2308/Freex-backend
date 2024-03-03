@@ -25,10 +25,10 @@ export class SearchParamsService {
     async getSearchParams(req: any) {
         const searchParams = await this.userRepository.findOne({ where: { userId: req.user.id } })
         return {
-            gender: searchParams.gender,
-            distance: searchParams.distance,
-            minAge: searchParams.minAge,
-            maxAge: searchParams.maxAge,
+            gender: searchParams?.gender,
+            distance: searchParams?.distance,
+            minAge: searchParams?.minAge,
+            maxAge: searchParams?.maxAge,
         }
     }
 }

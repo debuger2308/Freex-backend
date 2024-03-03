@@ -9,18 +9,25 @@ import { UsersData } from "./user-data/users-data.model";
 import { SearchParamsController } from './search-params/search-params.controller';
 import { SearchParamsModule } from './search-params/search-params.module';
 import { SearchParams } from "./search-params/search-params.model";
-
+import { ImagesModule } from './images/images.module';
+import { Images } from "./images/images.model";
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from "@nestjs/serve-static";
+import * as path from 'path'
 
 
 @Module({
     controllers: [SearchParamsController],
     providers: [
-        
+
     ],
     imports: [
-        
+
         ConfigModule.forRoot({
             envFilePath: `.${process.env.NODE_ENV}.env`
+        }),
+        ServeStaticModule.forRoot({
+            rootPath: path.resolve(__dirname, '../', 'static'),
         }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
@@ -30,13 +37,15 @@ import { SearchParams } from "./search-params/search-params.model";
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
             autoLoadModels: true,
-            models: [User, UsersData, SearchParams],
+            models: [User, UsersData, SearchParams, Images],
         }),
         UsersModule,
         AuthModule,
         UsersDataModule,
         SearchParamsModule,
-        
+        ImagesModule,
+        FilesModule,
+
     ]
 })
 export class AppModule { }

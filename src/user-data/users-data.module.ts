@@ -5,12 +5,13 @@ import { UsersDataController } from './users-data.controller';
 import { UsersDataService } from './users-data.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { SearchParamsModule } from 'src/search-params/search-params.module';
+import { Images } from 'src/images/images.model';
 
 @Module({
     controllers: [UsersDataController],
     providers: [UsersDataService],
     imports: [
-        SequelizeModule.forFeature([UsersData]),
+        SequelizeModule.forFeature([UsersData, Images]),
         forwardRef(() => AuthModule),
         SearchParamsModule
     ],

@@ -1,5 +1,6 @@
 
-import { Column, DataType, Table, Model, BelongsTo, ForeignKey } from "sequelize-typescript";
+import { Column, DataType, Table, Model, BelongsTo, ForeignKey, HasMany } from "sequelize-typescript";
+import { Images } from "src/images/images.model";
 import { User } from "src/users/users.model";
 
 
@@ -58,4 +59,9 @@ export class UsersData extends Model<UsersData, usersDataCreateAttrs>{
 
     @BelongsTo(() => User)
     user: User
+
+    @HasMany(() => Images)
+    images: Images[]
+
+    distance: number
 }

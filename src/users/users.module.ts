@@ -9,6 +9,9 @@ import { SearchParams } from 'src/search-params/search-params.model';
 import { SearchParamsModule } from 'src/search-params/search-params.module';
 import { ImagesModule } from 'src/images/images.module';
 import { Images } from 'src/images/images.model';
+import { VotesModule } from 'src/votes/votes.module';
+import { Votes } from 'src/votes/votes.model';
+import { VotesService } from 'src/votes/votes.service';
 
 
 @Module({
@@ -16,10 +19,11 @@ import { Images } from 'src/images/images.model';
   providers: [UsersService],
   imports: [
 
-    SequelizeModule.forFeature([User, UsersData, SearchParams, Images]),
+    SequelizeModule.forFeature([User, UsersData, SearchParams, Images, Votes]),
     UsersDataModule,
     SearchParamsModule,
-    ImagesModule
+    ImagesModule,
+    VotesModule
   ],
   exports: [UsersService]
 })

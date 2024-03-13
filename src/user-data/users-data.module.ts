@@ -6,6 +6,10 @@ import { UsersDataService } from './users-data.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { SearchParamsModule } from 'src/search-params/search-params.module';
 import { Images } from 'src/images/images.model';
+import { VotesModule } from 'src/votes/votes.module';
+import { VotesService } from 'src/votes/votes.service';
+import { UsersModule } from 'src/users/users.module';
+
 
 @Module({
     controllers: [UsersDataController],
@@ -13,7 +17,9 @@ import { Images } from 'src/images/images.model';
     imports: [
         SequelizeModule.forFeature([UsersData, Images]),
         forwardRef(() => AuthModule),
-        SearchParamsModule
+        SearchParamsModule,
+        VotesModule,
+
     ],
     exports: [UsersDataService],
 })

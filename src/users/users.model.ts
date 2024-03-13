@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Column, DataType, HasMany, HasOne, Model, Table } from "sequelize-typescript";
 import { SearchParams } from "src/search-params/search-params.model";
 import { UsersData } from "src/user-data/users-data.model";
+import { Votes } from "src/votes/votes.model";
 
 interface UserCreationAttrs {
     nickname: string
@@ -56,12 +57,13 @@ export class User extends Model<User, UserCreationAttrs>{
         allowNull: true
     })
     refreshToken: string
-
+    @HasMany(() => Votes)
+    votes: Votes[]
     @HasOne(() => UsersData)
     userData: UsersData
 
     @HasOne(() => SearchParams)
     searchParams: SearchParams
 
-    
+
 }

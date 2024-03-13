@@ -13,13 +13,17 @@ import { ImagesModule } from './images/images.module';
 import { Images } from "./images/images.model";
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from "@nestjs/serve-static";
+import { VotesController } from './votes/votes.controller';
+import { VotesModule } from './votes/votes.module';
 import * as path from 'path'
+import { Votes } from "./votes/votes.model";
+
 
 
 @Module({
-    controllers: [SearchParamsController],
+    controllers: [SearchParamsController, VotesController],
     providers: [
-
+        
     ],
     imports: [
 
@@ -37,7 +41,7 @@ import * as path from 'path'
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
             autoLoadModels: true,
-            models: [User, UsersData, SearchParams, Images],
+            models: [User, UsersData, SearchParams, Images, Votes],
         }),
         UsersModule,
         AuthModule,
@@ -45,6 +49,7 @@ import * as path from 'path'
         SearchParamsModule,
         ImagesModule,
         FilesModule,
+        VotesModule,
 
     ]
 })

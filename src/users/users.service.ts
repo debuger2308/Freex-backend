@@ -10,9 +10,7 @@ export class UsersService {
 
     constructor(@InjectModel(User) private userRepository: typeof User,
         private userDataService: UsersDataService,
-        private searchParamsService: SearchParamsService) {
-
-    }
+        private searchParamsService: SearchParamsService) { }
 
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto)
@@ -47,6 +45,13 @@ export class UsersService {
         const user = await this.userRepository.findOne({
             where: { id: userId },
             include: ['userData']
+        })
+        return user
+    }
+    async getUserByUserIdWithVotes(userId: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+            include: ['votes']
         })
         return user
     }

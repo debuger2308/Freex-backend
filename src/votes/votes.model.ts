@@ -2,13 +2,9 @@ import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize
 import { User } from "src/users/users.model"
 
 
-interface searchParamsCreateAttr {
-
-}
-
 
 @Table({ tableName: "votes" })
-export class Votes extends Model<Votes, searchParamsCreateAttr>{
+export class Votes extends Model<Votes>{
 
     @Column({ type: DataType.BOOLEAN })
     vote: boolean

@@ -1,7 +1,10 @@
+import { IsNumber, IsString, Max, MaxLength, Min } from "class-validator"
 
-export class CreateMessageDto {
+
+export class MessageDto {
 
     readonly message: string
 
     readonly userId: number
+
 }

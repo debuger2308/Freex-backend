@@ -16,42 +16,43 @@ export class VotesService {
 
     async vote(dto: VotesDto, req: any) {
         const user = await this.usersService.getUserByUserIdWithVotes(req.user.id)
-        const chat = await this.chatsService.findChat({ userId1: req.user.id, userId2: dto.votedUserId })
         const candidat = await this.voteRepository.findOne({ where: { userId: req.user.id, votedUserId: dto.votedUserId } })
-        const sympathy = await this.voteRepository.findOne({ where: { userId: dto.votedUserId, votedUserId: req.user.id } })
+        const opponent = await this.voteRepository.findOne({ where: { userId: dto.votedUserId, votedUserId: req.user.id } })
+
         if (candidat) {
             await this.voteRepository.update(dto, { where: { userId: req.user.id, votedUserId: dto.votedUserId } })
         }
         else {
             const vote = await this.voteRepository.create(dto)
             await user.$set('votes', [...user.votes, vote])
+            user.save()
         }
 
-        if (dto.vote) {
-            const chat = await this.chatsService.createOrUpdateChat({
-                userId1: req.user.id,
-                userId2: dto.votedUserId,
-                chatType: `${sympathy?.vote ? 'main' : 'spam'}`
-            })
+        const chat = await this.chatsService.findChat({ userId1: req.user.id, userId2: dto.votedUserId })
+        if (dto.vote && !candidat?.vote) {
 
-            const message = await this.messagesService.createMessage({
-                userId: null,
-                messageType: 'like',
-                value: `${user.id}`
-            })
-            chat.$set('messages', [...chat.messages, message,])
-
+            if (chat) {
+                await this.chatsService.updateChat({ chatId: chat.chatId, chatType: `${opponent?.vote ? 'match' : 'spam'}` })
+                const message = await this.messagesService.createSystemMessage(`&${req.user.id}& liked &${dto.votedUserId}&`, 'liked')
+                chat.$set('messages', [...chat.messages, message])
+                chat.save()
+            }
+            else {
+                const chat = await this.chatsService.createChat({ userId1: req.user.id, userId2: dto.votedUserId, chatType: `${opponent?.vote ? 'match' : 'spam'}` })
+                const message = await this.messagesService.createSystemMessage(`&${req.user.id}& liked &${dto.votedUserId}&`, 'liked')
+                chat.$set('messages', [message])
+                chat.save()
+            }
         }
 
-        else if (!dto.vote && chat) {
+        else if (!dto.vote && candidat?.vote) {
+            if (chat) {
+                await this.chatsService.updateChat({ chatId: chat.chatId, chatType: 'spam' })
+                const message = await this.messagesService.createSystemMessage(`&${req.user.id}& disliked &${dto.votedUserId}&`, 'disliked')
+                chat.$set('messages', [...chat.messages, message])
+                chat.save()
+            }
 
-            await this.chatsService.updateChatType({ chatId: chat.chatId, chatType: 'spam' })
-            const message = await this.messagesService.createMessage({
-                userId: null,
-                messageType: 'dislike',
-                value: `${user.id}`
-            })
-            chat.$set('messages', [...chat.messages, message])
         }
 
         return HttpStatus.OK

@@ -1,10 +1,12 @@
 
-import { Column, DataType, HasMany, Table, Model, ForeignKey } from "sequelize-typescript";
+import { Column, DataType, HasMany, Table, Model, HasOne, ForeignKey, BelongsToMany } from "sequelize-typescript";
 import { Messages } from "src/messages/messages.model";
+import { UsersData } from "src/user-data/users-data.model";
+import { ChatsUserData } from "./chats-user-data.model";
 
 
 @Table({ tableName: 'chats' })
-export class Chats extends Model<Chats>{
+export class Chats extends Model<Chats> {
 
     @Column({
         type: DataType.INTEGER,
@@ -13,33 +15,37 @@ export class Chats extends Model<Chats>{
         primaryKey: true
     })
     id: number
+
     @Column({
         type: DataType.STRING,
         unique: true,
-        primaryKey: true
+        allowNull: false,
     })
     chatId: string
 
     @Column({
         type: DataType.INTEGER,
-        primaryKey: true
+        unique: false,
+        allowNull: false
     })
-    userId1: number
+    userId1:number
+
     @Column({
         type: DataType.INTEGER,
-        primaryKey: true
+        unique: false,
+        allowNull: false
     })
-    userId2: number
-
+    userId2:number
 
     @Column({
         type: DataType.STRING,
-        allowNull: true
+        allowNull: false
     })
     chatType: string
 
+    @BelongsToMany(() => UsersData, () => ChatsUserData)
+    userData: UsersData[]
 
-
-    @HasMany(() => Messages)
+    @HasMany(() => Messages, { foreignKey: 'chatId', sourceKey: 'chatId' })
     messages: Messages[]
 }

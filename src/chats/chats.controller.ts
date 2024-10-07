@@ -9,6 +9,6 @@ export class ChatsController {
     @UseGuards(UserDataGuard)
     @UsePipes(ValidationPipe)
     getChats(@Req() req: any) {
-        return this.chatsService.getChats(req)
+        return this.chatsService.getChats(req.user.id)
     }
 }

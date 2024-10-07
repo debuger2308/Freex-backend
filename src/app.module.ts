@@ -6,28 +6,25 @@ import { User } from "./users/users.model";
 import { AuthModule } from './auth/auth.module';
 import { UsersDataModule } from './user-data/users-data.module';
 import { UsersData } from "./user-data/users-data.model";
-import { SearchParamsController } from './search-params/search-params.controller';
 import { SearchParamsModule } from './search-params/search-params.module';
 import { SearchParams } from "./search-params/search-params.model";
 import { ImagesModule } from './images/images.module';
 import { Images } from "./images/images.model";
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { VotesController } from './votes/votes.controller';
 import { VotesModule } from './votes/votes.module';
 import * as path from 'path'
 import { Votes } from "./votes/votes.model";
 import { ChatsModule } from './chats/chats.module';
-import { MessagesController } from './messages/messages.controller';
-import { MessagesService } from './messages/messages.service';
 import { MessagesModule } from './messages/messages.module';
 import { Chats } from "./chats/chats.model";
 import { Messages } from "./messages/messages.model";
+import { ChatsUserData } from "./chats/chats-user-data.model";
 
 
 
 @Module({
-    controllers: [SearchParamsController, VotesController, MessagesController],
+    controllers: [],
     providers: [],
     imports: [
 
@@ -45,8 +42,9 @@ import { Messages } from "./messages/messages.model";
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
             autoLoadModels: true,
-            models: [User, UsersData, SearchParams, Images, Votes, Chats, Messages],
+            models: [User, UsersData, SearchParams, Images, Votes, Chats, Messages, ChatsUserData],
         }),
+        ChatsModule,
         UsersModule,
         AuthModule,
         UsersDataModule,
@@ -55,7 +53,6 @@ import { Messages } from "./messages/messages.model";
         FilesModule,
         VotesModule,
         MessagesModule,
-        ChatsModule,
 
     ]
 })

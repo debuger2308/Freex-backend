@@ -7,19 +7,20 @@ import { AuthModule } from 'src/auth/auth.module';
 import { SearchParamsModule } from 'src/search-params/search-params.module';
 import { Images } from 'src/images/images.model';
 import { VotesModule } from 'src/votes/votes.module';
-import { VotesService } from 'src/votes/votes.service';
-import { UsersModule } from 'src/users/users.module';
 
+import { Chats } from 'src/chats/chats.model';
+import { ChatsUserData } from 'src/chats/chats-user-data.model';
+import { ChatsModule } from 'src/chats/chats.module';
 
 @Module({
-    controllers: [UsersDataController],
     providers: [UsersDataService],
+    controllers: [UsersDataController],
     imports: [
-        SequelizeModule.forFeature([UsersData, Images]),
+        SequelizeModule.forFeature([UsersData, Images, Chats, ChatsUserData]),
         forwardRef(() => AuthModule),
         SearchParamsModule,
         VotesModule,
-
+        forwardRef(() => ChatsModule),
     ],
     exports: [UsersDataService],
 })

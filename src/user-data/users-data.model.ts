@@ -1,5 +1,7 @@
 
-import { Column, DataType, Table, Model, BelongsTo, ForeignKey, HasMany } from "sequelize-typescript";
+import { Column, DataType, Table, Model, BelongsTo, ForeignKey, HasMany, BelongsToMany } from "sequelize-typescript";
+import { ChatsUserData } from "src/chats/chats-user-data.model";
+import { Chats } from "src/chats/chats.model";
 import { Images } from "src/images/images.model";
 import { User } from "src/users/users.model";
 
@@ -15,7 +17,7 @@ interface usersDataCreateAttrs {
 }
 
 @Table({ tableName: "users-data" })
-export class UsersData extends Model<UsersData, usersDataCreateAttrs>{
+export class UsersData extends Model<UsersData, usersDataCreateAttrs> {
 
     @Column({
         type: DataType.INTEGER,
@@ -59,6 +61,11 @@ export class UsersData extends Model<UsersData, usersDataCreateAttrs>{
 
     @BelongsTo(() => User)
     user: User
+    
+
+    
+    @BelongsToMany(() => Chats, () => ChatsUserData)
+    chats: Chats[]
 
     @HasMany(() => Images)
     images: Images[]

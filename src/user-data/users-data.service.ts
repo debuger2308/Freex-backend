@@ -33,6 +33,11 @@ export class UsersDataService {
         return userData
     }
 
+    async getUserDataById(id: number) {
+        const userData = await this.userRepository.findOne({ where: { id }, include: ['images'] })
+        return userData
+    }
+
     async getUsersData(req: any): Promise<any> {
         const searchParams = await this.searchParamsService.getSearchParams(req)
         const userData = await this.getUserData(req)
@@ -69,9 +74,9 @@ export class UsersDataService {
                     return data
                 }
             }).sort((a, b) => {
-                    if (votesId.includes(a.userId) && !votesId.includes(b.userId)) return -1
-                    else return 1
-                })
+                if (votesId.includes(a.userId) && !votesId.includes(b.userId)) return -1
+                else return 1
+            })
             ,
 
             usersIdVotes: votes

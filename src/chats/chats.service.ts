@@ -1,44 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Chats } from './chats.model';
+import { UsersDataService } from 'src/user-data/users-data.service';
+import { UsersData } from 'src/user-data/users-data.model';
+
+
 
 
 const { Op } = require("sequelize");
 
 @Injectable()
 export class ChatsService {
-    constructor(@InjectModel(Chats) private chatsRepository: typeof Chats) { }
+    constructor(@InjectModel(Chats) private chatsRepository: typeof Chats,
+        @Inject(forwardRef(() => UsersDataService)) private userDataService: UsersDataService,
+    ) { }
 
-    async createOrUpdateChat({ userId1, userId2, chatType }: { userId1: number, userId2: number, chatType: string })
-        : Promise<Chats> {
-
-        const [chat, created] = await this.chatsRepository.findOrCreate({
-            where: {
-                [Op.or]: [
-                    { chatId: `${userId1}-${userId2}` },
-                    { chatId: `${userId2}-${userId1}` },
-                ]
-            },
-            defaults: { chatId: `${userId1}-${userId2}`, chatType: chatType, userId1: userId1, userId2: userId2, messages: [] },
-            include: ['messages']
-        },)
-        if (!created) {
-            chat.chatType = chatType
-            chat.save()
-        }
-
-        return chat
-
-
-    }
-
-    async updateChatType({ chatId, chatType }: { chatId: string, chatType: string }) {
-        const chat = await this.chatsRepository.update({ chatType: chatType }, { where: { chatId: chatId } })
+    async createChat({ userId1, userId2, chatType }: { userId1: number, userId2: number, chatType: string }) {
+        const chat = await this.chatsRepository.create({ chatId: `${userId1}-${userId2}`, chatType: chatType, messages: [], userId1: userId1, userId2: userId2 })
+        const userData1 = await this.userDataService.getUserDataById(userId1)
+        const userData2 = await this.userDataService.getUserDataById(userId2)
+        await chat.$set('userData', [userData1, userData2])
         return chat
     }
 
 
-    async findChat({ userId1, userId2 }: { userId1: number, userId2: number }) {
+    async findChat({ userId1, userId2 }: { userId1: number, userId2: number }): Promise<Chats | null> {
         const chat = await this.chatsRepository.findOne({
             where: {
                 [Op.or]: [
@@ -51,18 +37,22 @@ export class ChatsService {
         return chat
     }
 
-    async getChats(req: any) {
+    async updateChat({ chatId, chatType }: { chatId: string, chatType: string }) {
+        const [affectedCount, chat] = await this.chatsRepository.update({ chatType: chatType }, { where: { chatId: chatId }, returning: true })
+        return chat
+    }
+
+    async getChats(userId: number) {
         const chats = await this.chatsRepository.findAll({
             where: {
                 [Op.or]: [
-                    { userId1: req.user.id },
-                    { userId2: req.user.id },
+                    { userId1: userId },
+                    { userId2: userId },
                 ]
-
-
-            },
-            include: ['messages']
+            }, include: ['messages', { model: UsersData, attributes: ['name','userId'], include: ['images'] }]
         })
+
         return chats
+  
     }
 }

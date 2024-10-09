@@ -36,7 +36,7 @@ import { ChatsUserData } from "./chats/chats-user-data.model";
         }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
-            host: process.env.POST,
+            host: process.env.POSTGRES_HOST,
             port: Number(process.env.POSTGRES_PORT),
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,

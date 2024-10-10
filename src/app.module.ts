@@ -33,6 +33,7 @@ import { ChatsUserData } from "./chats/chats-user-data.model";
         }),
         ServeStaticModule.forRoot({
             rootPath: path.resolve(__dirname, '../', 'static'),
+            serveRoot: '/static/images/'
         }),
         SequelizeModule.forRoot({
             dialect: 'postgres',

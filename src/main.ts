@@ -5,11 +5,11 @@ import * as fs from 'fs'
 const cookieParser = require('cookie-parser')
 async function start() {
   const PORT = process.env.PORT || 7000
-  const httpsOptions = {
-    key: fs.readFileSync('./secrets/private-key.pem'),
-    cert: fs.readFileSync('./secrets/public-certificate.pem'),
-  };
-  const app = await NestFactory.create(AppModule, {httpsOptions})
+  // const httpsOptions = {
+  //   key: fs.readFileSync('./secrets/private-key.pem'),
+  //   cert: fs.readFileSync('./secrets/public-certificate.pem'),
+  // };
+  const app = await NestFactory.create(AppModule)
 
   const config = new DocumentBuilder()
     .setTitle("Freex docs")

@@ -19,8 +19,9 @@ async function start() {
   app.enableCors({
     credentials: true, origin: true, 
   });
+  await app.listen(PORT, () => console.log(`Server stared on port = ${PORT}`))
   const url = await app.getUrl();
-  await app.listen(PORT, () => console.log(`Server stared on port = ${PORT}\n ${url}`))
+  console.log(url);
 }
 
 start()

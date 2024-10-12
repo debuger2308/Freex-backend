@@ -5,10 +5,6 @@ import * as fs from 'fs'
 const cookieParser = require('cookie-parser')
 async function start() {
   const PORT = process.env.PORT || 7000
-  // const httpsOptions = {
-  //   key: fs.readFileSync('./secrets/private-key.pem'),
-  //   cert: fs.readFileSync('./secrets/public-certificate.pem'),
-  // };
   const app = await NestFactory.create(AppModule)
 
   const config = new DocumentBuilder()
@@ -23,7 +19,8 @@ async function start() {
   app.enableCors({
     credentials: true, origin: true, 
   });
-  await app.listen(PORT, () => console.log(`Server stared on port = ${PORT}`))
+  const url = await app.getUrl();
+  await app.listen(PORT, () => console.log(`Server stared on port = ${PORT}\n ${url}`))
 }
 
 start()

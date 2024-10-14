@@ -21,7 +21,7 @@ import { ChatsModule } from 'src/chats/chats.module';
       ttl: 1000,
       limit: 300
     }]),
-    JwtModule.register({}),
+    JwtModule.register({ secret: process.env.COOKIE_SECRET }),
     forwardRef(() => UsersModule),
   ],
   exports: [

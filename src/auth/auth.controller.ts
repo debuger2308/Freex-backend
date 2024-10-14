@@ -38,7 +38,7 @@ export class AuthController {
     @Post('/logout')
     async logout(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
         const { refreshToken } = request.cookies
-        response.clearCookie('refreshToken', { httpOnly: true})
+        response.clearCookie('refreshToken', { httpOnly: true })
         await this.authService.logout(refreshToken)
         return HttpStatus.OK
     }
@@ -46,8 +46,7 @@ export class AuthController {
     @ApiResponse({ status: 200 })
     @Post('/refresh')
     async refreshToken(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
-        const { refreshToken } = request.cookies
-
+        const refreshToken = request.cookies.refreshToken
         const tokens = await this.authService.refreshToken(refreshToken)
         response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true })
         return { token: tokens.accessToken }

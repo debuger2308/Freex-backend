@@ -46,6 +46,9 @@ export class AuthController {
     @ApiResponse({ status: 200 })
     @Post('/refresh')
     async refreshToken(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+        console.log('-------------------------------');
+        console.log(request.cookies);
+        console.log('-------------------------------');
         const refreshToken = request.cookies.refreshToken
         const tokens = await this.authService.refreshToken(refreshToken)
         response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite:'none' })

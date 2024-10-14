@@ -17,7 +17,7 @@ export class AuthController {
     @UsePipes(ValidationPipe)
     async login(@Res({ passthrough: true }) response: Response, @Body() userDto: CreateUserDto) {
         const tokens = await this.authService.login(userDto)
-        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true })
+        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite:'none' })
         return { token: tokens.accessToken }
     }
 
@@ -28,7 +28,7 @@ export class AuthController {
     @UsePipes(ValidationPipe)
     async registration(@Res({ passthrough: true }) response: Response, @Body() userDto: CreateUserDto) {
         const tokens = await this.authService.registration(userDto)
-        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true })
+        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite:'none' })
         return { token: tokens.accessToken }
     }
 
@@ -38,7 +38,7 @@ export class AuthController {
     @Post('/logout')
     async logout(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
         const { refreshToken } = request.cookies
-        response.clearCookie('refreshToken', { httpOnly: true })
+        response.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite:'none' })
         await this.authService.logout(refreshToken)
         return HttpStatus.OK
     }
@@ -48,7 +48,7 @@ export class AuthController {
     async refreshToken(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
         const refreshToken = request.cookies.refreshToken
         const tokens = await this.authService.refreshToken(refreshToken)
-        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true })
+        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite:'none' })
         return { token: tokens.accessToken }
     }
 }

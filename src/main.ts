@@ -5,7 +5,7 @@ import * as fs from 'fs'
 const cookieParser = require('cookie-parser')
 async function start() {
   const PORT = process.env.PORT || 7000
-  const app = await NestFactory.create(AppModule,);
+  const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
     .setTitle("Freex docs")
@@ -18,8 +18,9 @@ async function start() {
   app.use(cookieParser(process.env.COOKIE_SECRET))
   app.enableCors({
     credentials: true,
-    origin: ['https://freex-front.vercel.app', 'http://localhost:3000'],
+    origin: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
+
   });
   await app.listen(PORT, () => console.log(`Server stared on port = ${PORT}`))
   const url = await app.getUrl();

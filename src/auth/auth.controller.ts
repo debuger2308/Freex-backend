@@ -17,7 +17,7 @@ export class AuthController {
     @UsePipes(ValidationPipe)
     async login(@Res({ passthrough: true }) response: Response, @Body() userDto: CreateUserDto) {
         const tokens = await this.authService.login(userDto)
-        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'none' })
+        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'none', domain: 'https://freex-front.vercel.app/' })
         return { token: tokens.accessToken }
     }
 
@@ -49,7 +49,7 @@ export class AuthController {
         console.log(request.cookies);
         const refreshToken = request.cookies.refreshToken
         const tokens = await this.authService.refreshToken(refreshToken)
-        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'none', domain: 'https://freex-front.vercel.app/' })
+        response.cookie('refreshToken', tokens.refreshToken, { maxAge: 24 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'none', domain: 'https://freex-front.vercel.app/',  })
         return { token: tokens.accessToken }
     }
 }

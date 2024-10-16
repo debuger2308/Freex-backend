@@ -18,9 +18,9 @@ async function start() {
   app.use(cookieParser(process.env.COOKIE_SECRET))
   app.enableCors({
     credentials: true,
-    origin: true,
+    origin: ['https://freex-front.vercel.app/'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    
+
   });
   await app.listen(PORT, () => console.log(`Server stared on port = ${PORT}`))
   const url = await app.getUrl();

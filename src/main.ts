@@ -20,7 +20,7 @@ async function start() {
     credentials: true,
     origin: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
-
+    preflightContinue: true
   });
   await app.listen(PORT, () => console.log(`Server stared on port = ${PORT}`))
   const url = await app.getUrl();

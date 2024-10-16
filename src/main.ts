@@ -19,6 +19,7 @@ async function start() {
   app.enableCors({
     credentials: true,
     origin: ['https://freex-front.vercel.app'],
+    
     allowedHeaders: ['Content-Type', 'Authorization'],
 
   });

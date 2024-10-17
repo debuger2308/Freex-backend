@@ -18,7 +18,7 @@ async function start() {
   app.use(cookieParser(process.env.COOKIE_SECRET))
   app.enableCors({
     credentials: true,
-    origin: ['https://freex-front.vercel.app'],
+    origin: 'https://freex-front.vercel.app',
     
     allowedHeaders: ['Content-Type', 'Authorization'],
 

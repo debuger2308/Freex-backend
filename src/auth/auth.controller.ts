@@ -21,7 +21,7 @@ export class AuthController {
             maxAge: 24 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: 'lax',
             path: '/'
         })
         return { token: tokens.accessToken }
@@ -38,7 +38,7 @@ export class AuthController {
             maxAge: 24 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: 'lax',
             path: '/'
         })
         return { token: tokens.accessToken }
@@ -53,7 +53,7 @@ export class AuthController {
         response.clearCookie('refreshToken', {
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: 'lax',
             path: '/'
         })
         await this.authService.logout(refreshToken)
@@ -70,7 +70,7 @@ export class AuthController {
             maxAge: 24 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: 'lax',
             path: '/'
         })
         return { token: tokens.accessToken }

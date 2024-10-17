@@ -71,7 +71,6 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            domain: 'freex-front.vercel.app',
             path: '/'
         })
         return { token: tokens.accessToken }

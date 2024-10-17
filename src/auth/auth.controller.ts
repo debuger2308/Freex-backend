@@ -22,7 +22,8 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'lax',
-            path: '/'
+            path: '/',
+            domain: 'freex-front.vercel.app'
         })
         return { token: tokens.accessToken }
     }
@@ -39,7 +40,8 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'lax',
-            path: '/'
+            path: '/',
+            domain: 'freex-front.vercel.app'
         })
         return { token: tokens.accessToken }
     }
@@ -54,7 +56,8 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'lax',
-            path: '/'
+            path: '/',
+            domain: 'freex-front.vercel.app'
         })
         await this.authService.logout(refreshToken)
         return HttpStatus.OK
@@ -71,7 +74,8 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'lax',
-            path: '/'
+            path: '/',
+            domain: 'freex-front.vercel.app'
         })
         return { token: tokens.accessToken }
     }

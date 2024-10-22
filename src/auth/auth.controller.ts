@@ -21,9 +21,9 @@ export class AuthController {
             maxAge: 24 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'lax',
+            sameSite: 'none',
             path: '/',
-            domain: 'freex-front.vercel.app'
+            domain: '.freex-front-production.up.railway.app'
         })
         return { token: tokens.accessToken }
     }
@@ -39,9 +39,8 @@ export class AuthController {
             maxAge: 24 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'lax',
-            path: '/',
-            domain: 'freex-front.vercel.app'
+            sameSite: 'none',
+            domain: '.freex-front-production.up.railway.app'
         })
         return { token: tokens.accessToken }
     }
@@ -55,9 +54,8 @@ export class AuthController {
         response.clearCookie('refreshToken', {
             httpOnly: true,
             secure: true,
-            sameSite: 'lax',
-            path: '/',
-            domain: 'freex-front.vercel.app'
+            sameSite: 'none',
+            domain: '.freex-front-production.up.railway.app'
         })
         await this.authService.logout(refreshToken)
         return HttpStatus.OK
@@ -73,9 +71,8 @@ export class AuthController {
             maxAge: 24 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'lax',
-            path: '/',
-            domain: 'freex-front.vercel.app'
+            sameSite: 'none',
+            domain: '.freex-front-production.up.railway.app'
         })
         return { token: tokens.accessToken }
     }

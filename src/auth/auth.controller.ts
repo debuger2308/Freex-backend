@@ -22,7 +22,6 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            domain: '.freex-front-production.up.railway.app'
         })
         return { token: tokens.accessToken }
     }
@@ -39,7 +38,6 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            domain: '.freex-front-production.up.railway.app'
         })
         return { token: tokens.accessToken }
     }
@@ -54,7 +52,6 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            domain: '.freex-front-production.up.railway.app'
         })
         await this.authService.logout(refreshToken)
         return HttpStatus.OK
@@ -71,7 +68,6 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            domain: '.freex-front-production.up.railway.app'
         })
         return { token: tokens.accessToken }
     }

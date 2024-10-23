@@ -22,7 +22,6 @@ export class AuthController {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            path: '/',
             domain: '.freex-front-production.up.railway.app'
         })
         return { token: tokens.accessToken }

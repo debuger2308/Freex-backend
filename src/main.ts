@@ -17,7 +17,7 @@ async function start() {
   SwaggerModule.setup('/api/docs', app, document)
   app.use(cookieParser(process.env.COOKIE_SECRET))
   app.enableCors({
-    origin: 'https://freex-front-production.up.railway.app',
+    origin: ['https://freex-front-production.up.railway.app', 'https://freex-front-production.up.railway.app'],
     credentials: true,
   });
   await app.listen(PORT, () => console.log(`Server stared on port = ${PORT}`))
